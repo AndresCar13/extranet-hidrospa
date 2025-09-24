@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Extranet Hidrospa · Acceso</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Extranet Hidrospa</h1>
+
+      <section>
+        <h2>Crear cuenta</h2>
+        <form id="form-register">
+          <input name="fullName" type="text" placeholder="Nombre completo" />
+          <input name="email" type="email" placeholder="Email" required />
+          <input
+            name="password"
+            type="password"
+            placeholder="Contraseña"
+            minlength="6"
+            required
+          />
+          <button>Registrarme</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Iniciar sesión</h2>
+        <form id="form-login">
+          <input name="email" type="email" placeholder="Email" required />
+          <input
+            name="password"
+            type="password"
+            placeholder="Contraseña"
+            required
+          />
+          <button>Entrar</button>
+        </form>
+      </section>
+
+      <pre id="msg"></pre>
+
+      <script src="/main.js"></script>
+    </div>
+  </body>
+</html>

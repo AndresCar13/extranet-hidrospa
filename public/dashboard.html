@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard · Extranet Hidrospa</title>
+</head>
+<body>
+  <h1>Bienvenido a tu panel</h1>
+  <p id="userInfo">Cargando información...</p>
+  <button id="logout">Cerrar sesión</button>
+
+  <script>
+    const API = 'http://localhost:3000';
+    
+    // Verifica token en localStorage
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('No tienes sesión activa. Inicia sesión primero.');
+      window.location.href = '/index.html'; // redirige a login
+    } else {
+      // Obtiene datos del usuario
+      fetch(`${API}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.error) {
+          alert('Sesión inválida. Inicia sesión de nuevo.');
+          localStorage.removeItem('token');
+          window.location.href = '/index.html';
+        } else {
+          document.getElementById('userInfo').textContent = 
+            `Hola, ${data.full_name || data.email}. Bienvenido`;
+        }
+      });
+    }
+
+    // Logout
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      window.location.href = '/index.html';
+    });
+  </script>
+</body>
+</html>
