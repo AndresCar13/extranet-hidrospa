@@ -331,3 +331,18 @@ body.login-body {
     color: #0A2342;
     font-weight: 400;
 }
+
+.sortable {
+    cursor: pointer;
+    position: relative;
+}
+
+.sortable::after {
+    content: "⇅";
+    font-size: 12px;
+    margin-left: 6px;
+    opacity: 0.4;
+}
+
+.sortable.asc::after { content: "↑"; opacity: 1; }
+.sortable.desc::after { content: "↓"; opacity: 1; }

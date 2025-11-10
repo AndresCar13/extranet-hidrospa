@@ -61,8 +61,8 @@
             <th>Cliente</th>
             <th>Producto</th>
             <th>Adicionales</th>
-            <th>Fecha cargue</th>
-            <th>Fecha entrega</th>
+            <th class="sortable" data-col="fecha_cargue">Fecha cargue</th>
+            <th class="sortable" data-col="fecha_entrega">Fecha entrega</th>
             <th>Transportador</th>
             <th>Dirección envío</th>
         </tr>
@@ -134,6 +134,35 @@
         });
     }
 
+    let sortColumn = null;
+    let sortDirection = null;
+
+    document.querySelectorAll('.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.col;
+
+            if (sortColumn === col) {
+                // Alternar ASC → DESC → Sin orden
+                sortDirection = sortDirection === 'asc' ? 'desc' : sortDirection === 'desc' ? null : 'asc';
+            } else {
+                sortColumn = col;
+                sortDirection = 'asc';
+            }
+
+            aplicarFiltros();
+            actualizarIconosOrden();
+        });
+    });
+
+    function actualizarIconosOrden() {
+        document.querySelectorAll('.sortable').forEach(th => th.classList.remove('asc', 'desc'));
+        if (sortDirection) {
+            const active = document.querySelector(`.sortable[data-col="${sortColumn}"]`);
+            active.classList.add(sortDirection);
+        }
+    }
+
+
     // Renderizar tabla
     function mostrarTabla(data) {
         const tbody = document.querySelector('#tablaCronograma tbody');
@@ -202,6 +231,21 @@
 
         if (feIni) data = data.filter(x => d(x.fecha_entrega) >= feIni);
         if (feFin) data = data.filter(x => d(x.fecha_entrega) <= feFin);
+
+        // --- ORDENAMIENTO ---
+        if (sortColumn && sortDirection) {
+            data.sort((a, b) => {
+                let v1 = a[sortColumn] ? a[sortColumn].substring(0,10) : '';
+                let v2 = b[sortColumn] ? b[sortColumn].substring(0,10) : '';
+
+                // Convertir a fecha para comparar
+                v1 = v1 ? new Date(v1) : new Date("1900-01-01");
+                v2 = v2 ? new Date(v2) : new Date("1900-01-01");
+
+                return sortDirection === 'asc' ? v1 - v2 : v2 - v1;
+            });
+        }
+
 
         mostrarTabla(data);
     }
