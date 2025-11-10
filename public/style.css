@@ -1,249 +1,333 @@
-/* ======== RESET ======== */
+/* ======================= RESET ======================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Lato", Arial, Helvetica, sans-serif;
 }
 
-/* ======== BASE ======== */
+/* ======================= BASE ======================== */
 body {
-    background: #f5f6fa;
+    background: #f5f7fa;
     color: #2f3640;
     width: 100%;
     min-height: 100vh;
     padding: 20px;
 }
 
-/* ======== TITULOS ======== */
-h1 {
-    margin-bottom: 15px;
-    color: #273c75;
-}
-
-h2 {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 25px;
+/* ======================= TITULOS ===================== */
+h1, h2, h3 {
+    font-family: "Lato", sans-serif;
+    font-weight: 700; /* Titulares firmes */
+    letter-spacing: 0.5px;
     color: #0A2342;
-    font-weight: 700;
 }
 
-/* ======== LOGIN / FORMULARIOS ======== */
+body, p, td, th, input, button, label {
+    font-weight: 400; /* Lectura clara */
+}
+
+button {
+    font-weight: 600; /* Botón más fuerte */
+}
+
+/* ======================= LOGIN / FORMULARIOS ========= */
 .container {
     background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 35px 30px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.06);
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    margin: auto;
     text-align: center;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 12px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input {
     padding: 10px;
-    border: 1px solid #dcdde1;
-    border-radius: 5px;
+    border: 1px solid #cfd6e4;
+    border-radius: 6px;
     font-size: 14px;
-    outline: none;
     transition: all 0.2s ease;
 }
 
 input:focus {
-    border-color: #00a8ff;
-    box-shadow: 0 0 5px rgba(0, 168, 255, 0.3);
+    border-color: #0077cc;
+    box-shadow: 0 0 5px rgba(0,119,204,0.4);
 }
 
 button {
-    padding: 10px;
-    background: #00a8ff;
+    padding: 11px;
+    background: #0077cc;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, transform 0.1s;
 }
 
 button:hover {
-    background: #0097e6;
+    background: #005ea8;
+    transform: translateY(-1px);
 }
 
-/* ======== MENSAJES ======== */
-#msg {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    display: none;
-}
+/* ======================= MENSAJES ==================== */
+#msg { margin-top: 10px; font-size: 14px; display: none; }
+#msg.success { color: #15803d; }
+#msg.error { color: #b91c1c; }
 
-#msg.success {
-    background: #dff9fb;
-    color: #22a6b3;
-}
-
-#msg.error {
-    background: #f6e58d;
-    color: #e84118;
-}
-
-/* ======== DASHBOARD ======== */
+/* ======================= DASHBOARD =================== */
 .dashboard {
     max-width: 600px;
     background: #fff;
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin: auto;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.08);
     text-align: center;
 }
 
-.dashboard p {
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #718093;
-}
-
-/* ======== TABLA CRONOGRAMA ======== */
+/* ======================= TABLA ======================= */
 .table-container {
-    width: 95%;
-    margin: 30px auto 0 auto;
+    width: 100%;
+    margin-top: 30px;
     overflow-x: auto;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
     background: #ffffff;
+    table-layout: fixed;
 }
 
 thead {
     background: #0A2342;
     color: white;
-    text-transform: uppercase;
-    font-weight: bold;
 }
 
 thead th {
-    padding: 10px;
-    border-bottom: 2px solid #062035;
+    padding: 12px;
     text-align: left;
-    white-space: nowrap;
+    font-size: 13px;
 }
 
-tbody tr:nth-child(even) {
-    background: #f2f6fa;
-}
-
-tbody tr:hover {
-    background: #dce9f5;
-    cursor: pointer;
-}
+tbody tr:nth-child(even) { background: #f4f8fc; }
+tbody tr:hover { background: #e8f1fa; cursor: pointer; }
 
 td {
-    padding: 8px 10px;
-    border-bottom: 1px solid #d0d8e4;
+    padding: 10px;
+    border-bottom: 1px solid #d4dde7;
+    font-size: 14px;
+    word-break: break-word;
 }
 
-/* ======== BARRA DE FILTROS ======== */
+/* ======================= FILTROS ===================== */
 .filters-wrapper {
-    width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 10px;
-    padding-right: 0;
+    margin-bottom: 15px;
 }
 
 .filters-box {
-    background: #ffffff;
-    border: 1px solid #c7d2e2;
-    border-radius: 8px;
-    padding: 15px;
+    background: white;
+    border: 1px solid #cfd6e4;
+    border-radius: 10px;
+    padding: 18px;
     display: flex;
-    gap: 18px;
     flex-wrap: wrap;
-    align-items: flex-end;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.06);
-
-    /* NUEVO: */
+    gap: 18px;
     max-width: 1200px;
     width: 100%;
-    justify-content: center;
+    align-items: flex-end;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.05);
 }
 
-.filters-box label {
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 3px;
-}
+.filters-box label { font-size: 13px; font-weight: 600; }
 
 .filters-box input,
 .filters-box select {
     padding: 6px 8px;
     border: 1px solid #b8c4d6;
-    border-radius: 4px;
-    font-size: 14px;
+    border-radius: 6px;
 }
 
 #btnBuscar {
     background: #0A2342;
+    padding: 10px 16px;
+}
+#btnBuscar:hover { background: #083060; }
+
+/* ======================= DETALLE ===================== */
+.detalle-card {
+    width: 75%;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px 35px;
+    border-radius: 12px;
+    border: 1px solid #d0d8e4;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+    line-height: 1.7;
+}
+
+/* ===================== SOLO GESTIÓN LOGÍSTICA ======== */
+body.gestion-logistica { padding-top: 10px; }
+
+/* ======== DASHBOARD MODERNO ======== */
+
+body.dashboard-body {
+    text-align: center;
+}
+
+.welcome {
+    margin-top: -10px;
+    color: #2f3640;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.dashboard-grid {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 25px;
+}
+
+.dash-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: left;
+    border: 1px solid #d6dde8;
+    box-shadow: 0px 4px 14px rgba(0,0,0,0.05);
+    text-decoration: none;
+    color: #0A2342;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dash-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+}
+
+.dash-card h3 {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.dash-card p {
+    color: #505b6d;
+    font-size: 14px;
+}
+
+/* BOTÓN SALIR */
+.logout {
+    margin-top: 40px;
+    background: #e84118;
     color: white;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 8px 16px;
+    border-radius: 6px;
+    padding: 10px 18px;
     font-weight: 600;
+    cursor: pointer;
     transition: background 0.2s ease;
 }
 
-#btnBuscar:hover {
-    background: #083060;
+.logout:hover {
+    background: #c23616;
 }
 
-/* ======== RESPONSIVE ======== */
-@media (max-width: 800px) {
-    .filters-wrapper {
-        justify-content: center;
-        padding-right: 0;
-    }
+/* ======== LOGIN & REGISTRO ======== */
 
-    .filters-box {
-        justify-content: center;
-    }
+body.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eef2f7;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Lato', sans-serif;
 }
 
-/* Evitar desbordamiento de columnas largas */
-td, th {
-    white-space: normal;
-    word-wrap: break-word;
-    word-break: break-word;
-    max-width: 300px; /* ajustable */
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    padding: 35px 35px 45px;
+    border-radius: 14px;
+    box-shadow: 0px 6px 25px rgba(0,0,0,0.08);
+    text-align: center;
 }
 
-/* Para pantallas ancho grande */
-@media (min-width: 1400px) {
-    td, th {
-        max-width: 450px;
-    }
+.login-card h2 {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0A2342;
 }
 
-/* Mantener scroll horizontal si es necesario */
-.table-container {
-    overflow-x: auto;
-    display: block;
+.login-card h3 {
+    margin: 18px 0 10px;
+    font-weight: 600;
+    color: #0A2342;
 }
 
-table {
-    table-layout: fixed;
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #c7d2e2;
+    margin-bottom: 12px;
+    font-size: 14px;
+    transition: border-color .2s ease;
+}
+
+.login-card input:focus {
+    border-color: #0077CC;
+    box-shadow: 0 0 5px rgba(0,119,204,0.3);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #0077CC;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.btn-primary:hover {
+    background: #005fa3;
+}
+
+#msg {
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.dashboard-body h2 {
+    margin-bottom: 12px; /* antes era muy pequeño */
+}
+
+.welcome {
+    font-size: 18px;
+    margin-bottom: 30px;
+    margin-top: 8px;   /* 👉 este es el espacio que estabas necesitando */
+    text-align: center;
+    color: #0A2342;
+    font-weight: 400;
 }

@@ -1,48 +1,41 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Extranet Hidrospa · Acceso</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>Extranet Hidrospa</h1>
 
-      <section>
-        <h2>Crear cuenta</h2>
-        <form id="form-register">
-          <input name="fullName" type="text" placeholder="Nombre completo" />
-          <input name="email" type="email" placeholder="Email" required />
-          <input
-            name="password"
-            type="password"
-            placeholder="Contraseña"
-            minlength="6"
-            required
-          />
-          <button>Registrarme</button>
-        </form>
-      </section>
+    <!-- Fuente corporativa -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-      <section>
-        <h2>Iniciar sesión</h2>
-        <form id="form-login">
-          <input name="email" type="email" placeholder="Email" required />
-          <input
-            name="password"
-            type="password"
-            placeholder="Contraseña"
-            required
-          />
-          <button>Entrar</button>
-        </form>
-      </section>
+    <link rel="stylesheet" href="/style.css"/>
+</head>
 
-      <pre id="msg"></pre>
+<body class="login-body">
 
-      <script src="/main.js"></script>
-    </div>
-  </body>
+<div class="login-card">
+
+    <h2>Extranet Hidrospa</h2>
+
+    <h3>Crear cuenta</h3>
+    <form id="form-register">
+        <input name="fullName" type="text" placeholder="Nombre completo"/>
+        <input name="email" type="email" placeholder="Email" required/>
+        <input name="password" type="password" placeholder="Contraseña" minlength="6" required/>
+        <button class="btn-primary">Registrarme</button>
+    </form>
+
+    <h3>Iniciar sesión</h3>
+    <form id="form-login">
+        <input name="email" type="email" placeholder="Email" required/>
+        <input name="password" type="password" placeholder="Contraseña" required/>
+        <button class="btn-primary">Entrar</button>
+    </form>
+
+    <p id="msg"></p>
+
+</div>
+
+<script src="/main.js"></script>
+</body>
 </html>

@@ -1,57 +1,71 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard · Extranet Hidrospa</title>
+    <meta charset="UTF-8">
+    <title>Extranet Hidrospa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body>
 
-  <h1>Extranet Hidrospa</h1>
-  <p id="userInfo">Cargando información...</p>
+<body class="dashboard-body">
 
-  <nav>
-    <ul>
-      <li><a href="/password.html">Modificar contraseña</a></li>
-      <li><a href="/directory.html">Ver directorio de la compañía</a></li>
-      <li><a href="/gestionlogistica.html">Gestión logística</a></li>
-      <li><a href="/gestiontecnica.html">Gestión técnica</a></li>
-    </ul>
-  </nav>
+<h2>Extranet Hidrospa</h2>
+<p class="welcome">Hola, <span id="usuario"></span>. Bienvenido 👋</p>
 
-  <button id="logout">Cerrar sesión</button>
+<div class="dashboard-grid">
 
-  <script>
-    const API = 'http://localhost:3000';
-    
-    // Verifica token en localStorage
+    <a href="/directory.html" class="dash-card">
+        <h3>📇 Directorio</h3>
+        <p>Ver contactos de empleados y áreas.</p>
+    </a>
+
+    <a href="/gestionlogistica.html" class="dash-card">
+        <h3>🚚 Gestión logística</h3>
+        <p>Control de despachos, cargues y entregas.</p>
+    </a>
+
+    <a href="/gestiontecnica.html" class="dash-card">
+        <h3>🛠 Gestión técnica</h3>
+        <p>Soporte técnico, garantías y asistencia.</p>
+    </a>
+
+    <a href="/password.html" class="dash-card">
+        <h3>🔐 Cambiar contraseña</h3>
+        <p>Actualiza tu clave de seguridad.</p>
+    </a>
+
+</div>
+
+<button class="logout" id="logoutBtn">Cerrar sesión</button>
+
+<script>
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('No tienes sesión activa. Inicia sesión primero.');
-      window.location.href = '/index.html'; // redirige a login
-    } else {
-      // Obtiene datos del usuario
-      fetch(`${API}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(r => r.json())
-      .then(data => {
-        if (data.error) {
-          alert('Sesión inválida. Inicia sesión de nuevo.');
-          localStorage.removeItem('token');
-          window.location.href = '/index.html';
-        } else {
-          document.getElementById('userInfo').textContent = 
-            `Hola, ${data.full_name || data.email}. Bienvenido`;
-        }
-      });
+        location.href = '/index.html';
     }
 
-    // Logout
-    document.getElementById('logout').addEventListener('click', () => {
-      localStorage.removeItem('token');
-      window.location.href = '/index.html';
-    });
-  </script>
+    fetch('/auth/me', {
+        headers: {"Authorization": "Bearer " + token}
+    })
+        .then(r => r.json())
+        .then(data => {
+            const nombreCompleto = data.full_name || data.email;
+            const primerNombre = nombreCompleto.split(" ")[0]; // ✅ Solo primer nombre
+            document.getElementById('usuario').textContent = primerNombre;
+            localStorage.setItem('full_name', data.full_name || '');
+            localStorage.setItem('email', data.email || '');
+        })
+        .catch(() => {
+            localStorage.clear();
+            location.href = '/index.html';
+        });
+
+    document.getElementById('logoutBtn').onclick = () => {
+        localStorage.clear();
+        location.href = '/index.html';
+    };
+</script>
+
+
 </body>
 </html>

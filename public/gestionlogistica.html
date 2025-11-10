@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Gestión logística</title>
     <link rel="stylesheet" href="/style.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="gestion-logistica">
 <h2>Gestión logística</h2>
 <p style="text-align:center;"><a href="/dashboard.html">← Volver</a></p>
 
@@ -75,21 +76,56 @@
 
     let cronograma = [];
 
+    // -------------- utilidades de filtros --------------
+    const FILTER_KEYS = [
+        'filtroComercial', 'filtroCargueIni', 'filtroCargueFin',
+        'filtroEntregaIni', 'filtroEntregaFin', 'filtroBusqueda'
+    ];
+
+    function clearSessionFilters() {
+        FILTER_KEYS.forEach(k => sessionStorage.removeItem(k));
+    }
+
+    function restoreSessionFilters() {
+        document.getElementById('filterComercial').value = sessionStorage.getItem('filtroComercial') ?? '';
+        document.getElementById('filterFechaCargueInicio').value = sessionStorage.getItem('filtroCargueIni') ?? '';
+        document.getElementById('filterFechaCargueFin').value = sessionStorage.getItem('filtroCargueFin') ?? '';
+        document.getElementById('filterFechaEntregaInicio').value = sessionStorage.getItem('filtroEntregaIni') ?? '';
+        document.getElementById('filterFechaEntregaFin').value = sessionStorage.getItem('filtroEntregaFin') ?? '';
+        document.getElementById('filterBusqueda').value = sessionStorage.getItem('filtroBusqueda') ?? '';
+    }
+
+    function haveAnyFilter() {
+        return FILTER_KEYS.some(k => (sessionStorage.getItem(k) ?? '') !== '');
+    }
+
+    // -------------- carga inicial --------------
     fetch('/api/cronograma', {
-        headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
+        headers: {"Authorization": "Bearer " + localStorage.getItem('token')}
     })
         .then(r => r.json())
         .then(data => {
             cronograma = data;
-            cargarComerciales(data);
-        });
 
+            // Si NO vienes del detalle, limpia filtros. Si vienes del detalle (flag 1), consérvalos.
+            const keep = sessionStorage.getItem('keepFilters') === '1';
+            if (!keep) {
+                clearSessionFilters();
+            } else {
+                sessionStorage.removeItem('keepFilters'); // consume el flag
+            }
+
+            cargarComerciales(data);         // 1) poblar combo
+            restoreSessionFilters();         // 2) restaurar valores (ya existe el combo)
+            if (haveAnyFilter()) aplicarFiltros();  // 3) solo aplica si hay algo guardado
+        });
 
     // Cargar comerciales en el dropdown
     function cargarComerciales(data) {
         const select = document.getElementById('filterComercial');
-        const comerciales = [...new Set(data.map(x => x.comercial).filter(x => x))];
+        select.innerHTML = '<option value="">Todos</option>'; // reset
 
+        const comerciales = [...new Set(data.map(x => x.comercial).filter(x => x))].sort();
         comerciales.forEach(c => {
             const opt = document.createElement('option');
             opt.value = c;
@@ -105,26 +141,39 @@
 
         data.forEach(row => {
             tbody.innerHTML += `
-      <tr>
+      <tr onclick="goDetalle(${row.id})" style="cursor:pointer;">
         <td>${row.id}</td>
         <td>${row.comercial ?? ''}</td>
         <td>${row.rem_req ?? ''}</td>
         <td>${row.cliente ?? ''}</td>
         <td>${row.producto ?? ''}</td>
         <td>${row.adicionales ?? ''}</td>
-        <td>${row.fecha_cargue ? row.fecha_cargue.substring(0,10) : ''}</td>
-        <td>${row.fecha_entrega ? row.fecha_entrega.substring(0,10) : ''}</td>
+        <td>${row.fecha_cargue ? row.fecha_cargue.substring(0, 10) : ''}</td>
+        <td>${row.fecha_entrega ? row.fecha_entrega.substring(0, 10) : ''}</td>
         <td>${row.transportador ?? ''}</td>
         <td>${row.direccion_envio ?? ''}</td>
       </tr>`;
         });
     }
 
+    // Navegar a detalle conservando filtros
+    function goDetalle(id) {
+        sessionStorage.setItem('keepFilters', '1'); // marca que volvemos a esta vista
+        window.location.href = '/gestionlogistica_detalle.html?id=' + id;
+    }
+
     // Filtros
     document.getElementById('btnBuscar').addEventListener('click', aplicarFiltros);
 
-
     function aplicarFiltros() {
+        // Guardar filtros en sessionStorage
+        sessionStorage.setItem('filtroComercial', document.getElementById('filterComercial').value);
+        sessionStorage.setItem('filtroCargueIni', document.getElementById('filterFechaCargueInicio').value);
+        sessionStorage.setItem('filtroCargueFin', document.getElementById('filterFechaCargueFin').value);
+        sessionStorage.setItem('filtroEntregaIni', document.getElementById('filterFechaEntregaInicio').value);
+        sessionStorage.setItem('filtroEntregaFin', document.getElementById('filterFechaEntregaFin').value);
+        sessionStorage.setItem('filtroBusqueda', document.getElementById('filterBusqueda').value);
+
         let data = [...cronograma];
 
         const comercial = document.getElementById('filterComercial').value;
@@ -145,15 +194,19 @@
             );
         }
 
-        if (fcIni) data = data.filter(x => x.fecha_cargue && x.fecha_cargue >= fcIni);
-        if (fcFin) data = data.filter(x => x.fecha_cargue && x.fecha_cargue <= fcFin);
+        // Comparar usando el prefijo YYYY-MM-DD para evitar problemas con Z
+        const d = s => (s ? s.substring(0, 10) : '');
 
-        if (feIni) data = data.filter(x => x.fecha_entrega && x.fecha_entrega >= feIni);
-        if (feFin) data = data.filter(x => x.fecha_entrega && x.fecha_entrega <= feFin);
+        if (fcIni) data = data.filter(x => d(x.fecha_cargue) >= fcIni);
+        if (fcFin) data = data.filter(x => d(x.fecha_cargue) <= fcFin);
+
+        if (feIni) data = data.filter(x => d(x.fecha_entrega) >= feIni);
+        if (feFin) data = data.filter(x => d(x.fecha_entrega) <= feFin);
 
         mostrarTabla(data);
     }
 </script>
+
 </body>
 </html>
 

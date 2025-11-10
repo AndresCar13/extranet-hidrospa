@@ -33,7 +33,13 @@ app.listen(process.env.PORT, () =>
 
 // Obtener toda la tabla cronograma_logistico
 app.get('/api/cronograma', async (req, res) => {
+    const { id } = req.query;
     try {
+        if (id) {
+            const result = await db.query('SELECT * FROM cronograma_logistico WHERE id=$1', [id]);
+            return res.json(result.rows[0]);
+        }
+
         const result = await db.query('SELECT * FROM cronograma_logistico ORDER BY id DESC');
         res.json(result.rows);
     } catch (error) {

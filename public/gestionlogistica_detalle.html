@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Detalle Logístico</title>
+    <link rel="stylesheet" href="/style.css"/>
+</head>
+
+<body>
+<h2>Detalle del despacho logístico</h2>
+<p style="text-align:center;"><a href="/gestionlogistica.html">← Volver</a></p>
+
+<div class="detalle-card" id="detalle"></div>
+
+<script>
+    if (!localStorage.getItem('token')) location.href = '/index.html';
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    fetch('/api/cronograma?id=' + id, {
+        headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
+    })
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('detalle').innerHTML = `
+    <h3>${data.cliente}</h3>
+    <p><strong>Comercial:</strong> ${data.comercial ?? ''}</p>
+    <p><strong>Rem/Req:</strong> ${data.rem_req ?? ''}</p>
+    <p><strong>Producto:</strong> ${data.producto ?? ''}</p>
+    <p><strong>Adicionales:</strong> ${data.adicionales ?? ''}</p>
+    <p><strong>Flexibilidad entrega:</strong> ${data.flexibilidad_entrega ?? ''}</p>
+    <p><strong>Fecha de cargue:</strong> ${data.fecha_cargue?.substring(0,10) ?? ''}</p>
+    <p><strong>Fecha de entrega:</strong> ${data.fecha_entrega?.substring(0,10) ?? ''}</p>
+    <p><strong>Confirmación:</strong> ${data.confirmacion ? 'Sí' : 'No'}</p>
+    <p><strong>Reprogramado:</strong> ${data.reprogramado ? 'Sí' : 'No'}</p>
+    <p><strong>Pago 100%:</strong> ${data.pago_100 ? 'Sí' : 'No'}</p>
+    <p><strong>Fecha límite asesoría:</strong> ${data.fecha_limite_asesoria?.substring(0,10) ?? ''}</p>
+    <p><strong>Fecha programación asesoría:</strong> ${data.fecha_programacion_asesoria?.substring(0,10) ?? ''}</p>
+    <p><strong>Transportador:</strong> ${data.transportador ?? ''}</p>
+    <p><strong>Dirección de envío:</strong> ${data.direccion_envio ?? ''}</p>
+    <p><strong>Costo del flete:</strong> ${data.costo_flete ?? ''}</p>
+    <p><strong>Observaciones:</strong> ${data.observaciones ?? ''}</p>
+    <p><strong>Comentarios:</strong> ${data.comentarios ?? ''}</p>
+    <p><strong>Entregas a tiempo:</strong> ${data.entregas_a_tiempo ? 'Sí' : 'No'}</p>
+  `;
+        });
+</script>
+
+</body>
+</html>
