@@ -1,145 +1,123 @@
 /* ======== RESET ======== */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ======== BASE ======== */
 body {
-  background: #f5f6fa;
-  color: #2f3640;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;
-  padding: 20px;
+    background: #f5f6fa;
+    color: #2f3640;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
 }
 
-/* ======== CONTENEDOR PRINCIPAL ======== */
-.container {
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
+/* ======== TITULOS ======== */
 h1 {
-  margin-bottom: 15px;
-  color: #273c75;
+    margin-bottom: 15px;
+    color: #273c75;
 }
 
 h2 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  color: #40739e;
-  font-size: 18px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    color: #0A2342;
+    font-weight: 700;
 }
 
-/* ======== FORMULARIOS ======== */
+/* ======== LOGIN / FORMULARIOS ======== */
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-  padding: 10px;
-  border: 1px solid #dcdde1;
-  border-radius: 5px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
+    padding: 10px;
+    border: 1px solid #dcdde1;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
 }
 
 input:focus {
-  border-color: #00a8ff;
-  box-shadow: 0 0 5px rgba(0, 168, 255, 0.3);
+    border-color: #00a8ff;
+    box-shadow: 0 0 5px rgba(0, 168, 255, 0.3);
 }
 
 button {
-  padding: 10px;
-  background: #00a8ff;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+    padding: 10px;
+    background: #00a8ff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 button:hover {
-  background: #0097e6;
+    background: #0097e6;
 }
 
 /* ======== MENSAJES ======== */
 #msg {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  display: none;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    display: none;
 }
 
 #msg.success {
-  background: #dff9fb;
-  color: #22a6b3;
+    background: #dff9fb;
+    color: #22a6b3;
 }
 
 #msg.error {
-  background: #f6e58d;
-  color: #e84118;
+    background: #f6e58d;
+    color: #e84118;
 }
 
 /* ======== DASHBOARD ======== */
 .dashboard {
-  max-width: 600px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.dashboard h1 {
-  color: #2f3640;
-  margin-bottom: 20px;
+    max-width: 600px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .dashboard p {
-  margin-bottom: 20px;
-  font-size: 16px;
-  color: #718093;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #718093;
 }
 
-.dashboard button {
-  background: #e84118;
-}
-
-.dashboard button:hover {
-  background: #c23616;
-}
-
-/* ======== RESPONSIVE ======== */
-@media (max-width: 480px) {
-  .container, .dashboard {
-    width: 90%;
-    padding: 20px;
-  }
-}
-
-/* TABLAS HIDROSPA */
+/* ======== TABLA CRONOGRAMA ======== */
 .table-container {
     width: 95%;
-    margin: 40px auto;
+    margin: 30px auto 0 auto;
     overflow-x: auto;
 }
 
@@ -151,7 +129,7 @@ table {
 }
 
 thead {
-    background: #0A2342; /* azul oscuro hidrospa */
+    background: #0A2342;
     color: white;
     text-transform: uppercase;
     font-weight: bold;
@@ -165,11 +143,11 @@ thead th {
 }
 
 tbody tr:nth-child(even) {
-    background: #f2f6fa; /* gris muy claro */
+    background: #f2f6fa;
 }
 
 tbody tr:hover {
-    background: #dce9f5; /* efecto hover */
+    background: #dce9f5;
     cursor: pointer;
 }
 
@@ -178,9 +156,94 @@ td {
     border-bottom: 1px solid #d0d8e4;
 }
 
-h2 {
-    text-align: center;
-    margin-top: 40px;
-    color: #0A2342;
-    font-family: "Montserrat", sans-serif;
+/* ======== BARRA DE FILTROS ======== */
+.filters-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding-right: 0;
+}
+
+.filters-box {
+    background: #ffffff;
+    border: 1px solid #c7d2e2;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.06);
+
+    /* NUEVO: */
+    max-width: 1200px;
+    width: 100%;
+    justify-content: center;
+}
+
+.filters-box label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.filters-box input,
+.filters-box select {
+    padding: 6px 8px;
+    border: 1px solid #b8c4d6;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#btnBuscar {
+    background: #0A2342;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+#btnBuscar:hover {
+    background: #083060;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 800px) {
+    .filters-wrapper {
+        justify-content: center;
+        padding-right: 0;
+    }
+
+    .filters-box {
+        justify-content: center;
+    }
+}
+
+/* Evitar desbordamiento de columnas largas */
+td, th {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 300px; /* ajustable */
+}
+
+/* Para pantallas ancho grande */
+@media (min-width: 1400px) {
+    td, th {
+        max-width: 450px;
+    }
+}
+
+/* Mantener scroll horizontal si es necesario */
+.table-container {
+    overflow-x: auto;
+    display: block;
+}
+
+table {
+    table-layout: fixed;
 }

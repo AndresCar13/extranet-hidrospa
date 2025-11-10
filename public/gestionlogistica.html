@@ -10,6 +10,46 @@
 <h2>Gestión logística</h2>
 <p style="text-align:center;"><a href="/dashboard.html">← Volver</a></p>
 
+<div class="filters-wrapper">
+    <div class="filters-box">
+
+        <div style="display:flex; flex-direction:column;">
+            <label>Comercial</label>
+            <select id="filterComercial">
+                <option value="">Todos</option>
+            </select>
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+            <label>Fecha cargue (desde)</label>
+            <input type="date" id="filterFechaCargueInicio">
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+            <label>Fecha cargue (hasta)</label>
+            <input type="date" id="filterFechaCargueFin">
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+            <label>Fecha entrega (desde)</label>
+            <input type="date" id="filterFechaEntregaInicio">
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+            <label>Fecha entrega (hasta)</label>
+            <input type="date" id="filterFechaEntregaFin">
+        </div>
+
+        <div style="display:flex; flex-direction:column; flex:1;">
+            <label>Búsqueda general</label>
+            <input type="text" id="filterBusqueda" placeholder="Cliente, producto, dirección...">
+        </div>
+
+        <button id="btnBuscar">Buscar</button>
+
+    </div>
+</div>
+
 <div class="table-container">
     <table id="tablaCronograma">
         <thead>
@@ -33,15 +73,38 @@
 <script>
     if (!localStorage.getItem('token')) location.href = '/index.html';
 
+    let cronograma = [];
+
     fetch('/api/cronograma', {
         headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
     })
         .then(r => r.json())
         .then(data => {
-            const tbody = document.querySelector('#tablaCronograma tbody');
-            tbody.innerHTML = "";
-            data.forEach(row => {
-                tbody.innerHTML += `
+            cronograma = data;
+            cargarComerciales(data);
+        });
+
+
+    // Cargar comerciales en el dropdown
+    function cargarComerciales(data) {
+        const select = document.getElementById('filterComercial');
+        const comerciales = [...new Set(data.map(x => x.comercial).filter(x => x))];
+
+        comerciales.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c;
+            opt.textContent = c;
+            select.appendChild(opt);
+        });
+    }
+
+    // Renderizar tabla
+    function mostrarTabla(data) {
+        const tbody = document.querySelector('#tablaCronograma tbody');
+        tbody.innerHTML = "";
+
+        data.forEach(row => {
+            tbody.innerHTML += `
       <tr>
         <td>${row.id}</td>
         <td>${row.comercial ?? ''}</td>
@@ -49,13 +112,47 @@
         <td>${row.cliente ?? ''}</td>
         <td>${row.producto ?? ''}</td>
         <td>${row.adicionales ?? ''}</td>
-        <td>${row.fecha_cargue?.substring(0, 10) ?? ''}</td>
-        <td>${row.fecha_entrega?.substring(0, 10) ?? ''}</td>
+        <td>${row.fecha_cargue ? row.fecha_cargue.substring(0,10) : ''}</td>
+        <td>${row.fecha_entrega ? row.fecha_entrega.substring(0,10) : ''}</td>
         <td>${row.transportador ?? ''}</td>
         <td>${row.direccion_envio ?? ''}</td>
       </tr>`;
-            });
         });
+    }
+
+    // Filtros
+    document.getElementById('btnBuscar').addEventListener('click', aplicarFiltros);
+
+
+    function aplicarFiltros() {
+        let data = [...cronograma];
+
+        const comercial = document.getElementById('filterComercial').value;
+        const buscador = document.getElementById('filterBusqueda').value.toLowerCase();
+
+        const fcIni = document.getElementById('filterFechaCargueInicio').value;
+        const fcFin = document.getElementById('filterFechaCargueFin').value;
+        const feIni = document.getElementById('filterFechaEntregaInicio').value;
+        const feFin = document.getElementById('filterFechaEntregaFin').value;
+
+        if (comercial) data = data.filter(x => x.comercial === comercial);
+
+        if (buscador) {
+            data = data.filter(x =>
+                (x.cliente ?? '').toLowerCase().includes(buscador) ||
+                (x.producto ?? '').toLowerCase().includes(buscador) ||
+                (x.direccion_envio ?? '').toLowerCase().includes(buscador)
+            );
+        }
+
+        if (fcIni) data = data.filter(x => x.fecha_cargue && x.fecha_cargue >= fcIni);
+        if (fcFin) data = data.filter(x => x.fecha_cargue && x.fecha_cargue <= fcFin);
+
+        if (feIni) data = data.filter(x => x.fecha_entrega && x.fecha_entrega >= feIni);
+        if (feFin) data = data.filter(x => x.fecha_entrega && x.fecha_entrega <= feFin);
+
+        mostrarTabla(data);
+    }
 </script>
 </body>
 </html>
