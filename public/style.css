@@ -135,3 +135,52 @@ button:hover {
     padding: 20px;
   }
 }
+
+/* TABLAS HIDROSPA */
+.table-container {
+    width: 95%;
+    margin: 40px auto;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #ffffff;
+}
+
+thead {
+    background: #0A2342; /* azul oscuro hidrospa */
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+thead th {
+    padding: 10px;
+    border-bottom: 2px solid #062035;
+    text-align: left;
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+    background: #f2f6fa; /* gris muy claro */
+}
+
+tbody tr:hover {
+    background: #dce9f5; /* efecto hover */
+    cursor: pointer;
+}
+
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #d0d8e4;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 40px;
+    color: #0A2342;
+    font-family: "Montserrat", sans-serif;
+}

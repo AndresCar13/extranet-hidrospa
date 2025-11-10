@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const db = require('./db');
+
 require('dotenv').config();
 require('./db');
 
@@ -28,3 +30,14 @@ app.get('/ping', (_req, res) => {
 app.listen(process.env.PORT, () =>
   console.log(`API en http://localhost:${process.env.PORT}`)
 );
+
+// Obtener toda la tabla cronograma_logistico
+app.get('/api/cronograma', async (req, res) => {
+    try {
+        const result = await db.query('SELECT * FROM cronograma_logistico ORDER BY id DESC');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error consultando cronograma:', error);
+        res.status(500).json({ error: 'Error consultando el cronograma' });
+    }
+});

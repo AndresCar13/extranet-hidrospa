@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Gestión logística</title>
+    <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<h2>Gestión logística</h2>
+<p style="text-align:center;"><a href="/dashboard.html">← Volver</a></p>
+
+<div class="table-container">
+    <table id="tablaCronograma">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Comercial</th>
+            <th>Rem/Req</th>
+            <th>Cliente</th>
+            <th>Producto</th>
+            <th>Adicionales</th>
+            <th>Fecha cargue</th>
+            <th>Fecha entrega</th>
+            <th>Transportador</th>
+            <th>Dirección envío</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    if (!localStorage.getItem('token')) location.href = '/index.html';
+
+    fetch('/api/cronograma', {
+        headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
+    })
+        .then(r => r.json())
+        .then(data => {
+            const tbody = document.querySelector('#tablaCronograma tbody');
+            tbody.innerHTML = "";
+            data.forEach(row => {
+                tbody.innerHTML += `
+      <tr>
+        <td>${row.id}</td>
+        <td>${row.comercial ?? ''}</td>
+        <td>${row.rem_req ?? ''}</td>
+        <td>${row.cliente ?? ''}</td>
+        <td>${row.producto ?? ''}</td>
+        <td>${row.adicionales ?? ''}</td>
+        <td>${row.fecha_cargue?.substring(0, 10) ?? ''}</td>
+        <td>${row.fecha_entrega?.substring(0, 10) ?? ''}</td>
+        <td>${row.transportador ?? ''}</td>
+        <td>${row.direccion_envio ?? ''}</td>
+      </tr>`;
+            });
+        });
+</script>
+</body>
+</html>
+
+
