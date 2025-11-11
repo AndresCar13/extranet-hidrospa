@@ -118,40 +118,50 @@
     const toNumber = v => (v === '' || v === null || v === undefined) ? null : Number(v);
 
     // ===== Cargar detalle =====
-    fetch('/api/cronograma?id=' + id, {
-        headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
-    })
-        .then(r => r.json())
-        .then(data => {
-            despacho = data;
-            const f = x => x ? x.substring(0,10) : '';
-            document.getElementById('detalle').innerHTML = `
-    <h3>${data.cliente ?? ''}</h3>
-    <div class="grid-detail">
-      <div>
-        <p><strong>Comercial:</strong> ${data.comercial ?? ''}</p>
-        <p><strong>Rem/Req:</strong> ${data.rem_req ?? ''}</p>
-        <p><strong>Producto:</strong> ${data.producto ?? ''}</p>
-        <p><strong>Adicionales:</strong> ${data.adicionales ?? ''}</p>
-      </div>
-      <div>
-        <p><strong>Fecha cargue:</strong> ${f(data.fecha_cargue)}</p>
-        <p><strong>Fecha entrega:</strong> ${f(data.fecha_entrega)}</p>
-        <p><strong>Pago 100%:</strong> ${data.pago_100 ? 'Sí' : 'No'}</p>
-        <p><strong>Reprogramado:</strong> ${data.reprogramado ? 'Sí' : 'No'}</p>
-      </div>
-      <div>
-        <p><strong>Dirección de envío:</strong><br>${data.direccion_envio ?? ''}</p>
-        <p><strong>Transportador:</strong> ${data.transportador ?? ''}</p>
-        <p><strong>Costo del flete:</strong> ${data.costo_flete ?? ''}</p>
-      </div>
-      <div>
-        <p><strong>Observaciones:</strong><br>${data.observaciones ?? ''}</p>
-        <p><strong>Comentarios:</strong><br>${data.comentarios ?? ''}</p>
-        <p><strong>Entregas a tiempo:</strong> ${data.entregas_a_tiempo ? 'Sí' : 'No'}</p>
-      </div>
-    </div>`;
+    async function cargarDetalle() {
+        const r = await fetch('/api/cronograma?id=' + id, {
+            headers: {"Authorization": "Bearer " + localStorage.getItem('token')}
         });
+
+        despacho = await r.json();
+        const f = x => x ? x.substring(0, 10) : '';
+
+        document.getElementById('detalle').innerHTML = `
+        <h3>${despacho.cliente ?? ''}</h3>
+
+        <div class="grid-detail">
+          <div>
+            <p><strong>Comercial:</strong> ${despacho.comercial ?? ''}</p>
+            <p><strong>Rem/Req:</strong> ${despacho.rem_req ?? ''}</p>
+            <p><strong>Producto:</strong> ${despacho.producto ?? ''}</p>
+            <p><strong>Adicionales:</strong> ${despacho.adicionales ?? ''}</p>
+          </div>
+
+          <div>
+            <p><strong>Fecha cargue:</strong> ${f(despacho.fecha_cargue)}</p>
+            <p><strong>Fecha entrega:</strong> ${f(despacho.fecha_entrega)}</p>
+            <p><strong>Pago 100%:</strong> ${despacho.pago_100 ? 'Sí' : 'No'}</p>
+            <p><strong>Reprogramado:</strong> ${despacho.reprogramado ? 'Sí' : 'No'}</p>
+          </div>
+
+          <div>
+            <p><strong>Dirección de envío:</strong><br>${despacho.direccion_envio ?? ''}</p>
+            <p><strong>Transportador:</strong> ${despacho.transportador ?? ''}</p>
+            <p><strong>Costo del flete:</strong> ${despacho.costo_flete ?? ''}</p>
+          </div>
+
+          <div>
+            <p><strong>Observaciones:</strong><br>${despacho.observaciones ?? ''}</p>
+            <p><strong>Comentarios:</strong><br>${despacho.comentarios ?? ''}</p>
+            <p><strong>Entregas a tiempo:</strong> ${despacho.entregas_a_tiempo ? 'Sí' : 'No'}</p>
+          </div>
+        </div>
+    `;
+    }
+
+    // ✅ Llamar al cargar la página
+    cargarDetalle();
+
 
     // ===== Modal =====
     function abrirModal() {
@@ -160,17 +170,17 @@
         const form = document.getElementById('formEditar');
 
         // Prellenar básicos tipo texto/textarea
-        ['cliente','comercial','rem_req','producto','adicionales','transportador','direccion_envio','observaciones','comentarios']
+        ['cliente', 'comercial', 'rem_req', 'producto', 'adicionales', 'transportador', 'direccion_envio', 'observaciones', 'comentarios']
             .forEach(name => {
                 const el = form.querySelector(`[name="${name}"]`);
                 if (el) el.value = despacho[name] ?? '';
             });
 
         // Fechas
-        ['fecha_cargue','fecha_entrega','fecha_limite_asesoria','fecha_programacion_asesoria']
+        ['fecha_cargue', 'fecha_entrega', 'fecha_limite_asesoria', 'fecha_programacion_asesoria']
             .forEach(name => {
                 const el = form.querySelector(`[name="${name}"]`);
-                if (el) el.value = despacho[name] ? despacho[name].substring(0,10) : '';
+                if (el) el.value = despacho[name] ? despacho[name].substring(0, 10) : '';
             });
 
         // Números
@@ -185,7 +195,11 @@
 
         document.getElementById('modalEditar').classList.remove('hidden');
     }
-    function cerrarModal(){ document.getElementById('modalEditar').classList.add('hidden'); }
+
+    function cerrarModal() {
+        document.getElementById('modalEditar').classList.add('hidden');
+    }
+
     document.getElementById('btnEditar').onclick = abrirModal;
 
     // ===== Guardar cambios (PUT) =====
@@ -221,23 +235,18 @@
             entregas_a_tiempo: toBool(form.entregas_a_tiempo.checked),
         };
 
-        const resp = await fetch("/api/cronograma/" + id, {
-            method:"PUT",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer " + localStorage.getItem('token')
+        await fetch("/api/cronograma/" + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token')
             },
             body: JSON.stringify(payload)
         });
 
-        if (!resp.ok) {
-            const t = await resp.text().catch(()=> '');
-            alert("❌ Error guardando: " + t);
-            return;
-        }
+        cerrarModal();
+        await cargarDetalle(); // ✅ actualiza solo el detalle sin recargar toda la página
 
-        alert("✅ Cambios guardados");
-        location.reload();
     };
 
     // ===== Tabs =====
