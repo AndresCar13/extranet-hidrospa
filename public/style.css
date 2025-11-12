@@ -614,3 +614,36 @@ textarea:focus {
 .btn-done { background: #2ea043; color: white; }
 .btn-cancel { background: #d33; color: white; }
 .btn-delete { background: #e63946; color: white; }
+
+
+/* ==== FILAS DE SEPARACIÓN POR SEMANA ==== */
+.week-separator {
+    background: #003366;       /* azul institucional oscuro */
+    color: #fff;
+    font-weight: 700;
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+.week-separator td {
+    padding: 8px 12px;
+    border-top: 2px solid #fff;
+}
+
+/* Forzar estilo uniforme en las filas separadoras de semana */
+.week-separator {
+    background-color: #00205c !important; /* azul corporativo */
+    color: #ffffff !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 10px 12px;
+    border-top: 2px solid #00153f;
+    border-bottom: 2px solid #00153f;
+}
+
+/* Asegurar que no le afecte el striping de filas pares */
+.table-container tbody tr.week-separator:nth-child(even),
+.table-container tbody tr.week-separator:nth-child(odd) {
+    background-color: #00205c !important;
+}
