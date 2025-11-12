@@ -12,7 +12,16 @@ require('./db');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'http://192.168.0.201:3000',
+        'http://intranethidrospa.com'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 app.use('/auth', authRouter);
 
@@ -29,8 +38,8 @@ app.get('/ping', (_req, res) => {
     res.json({message: 'Servidor activo', time: new Date().toISOString()});
 });
 
-app.listen(process.env.PORT, () =>
-    console.log(`API en http://localhost:${process.env.PORT}`)
+app.listen(process.env.PORT, '0.0.0.0', () =>
+    console.log(`🌐 API disponible en http://0.0.0.0:${process.env.PORT}`)
 );
 
 // Obtener toda la tabla cronograma_logistico
